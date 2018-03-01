@@ -67,18 +67,14 @@ class App {
       },
 
       body: JSON.stringify({
-          id: book.id,
-          title: book.title,
-          description: book.description,
-          img_url: book.img_url,
-          users: book.users
+          "user_id": 17
           })
     };
-
-    fetch("https://flatiron-bookstore-challenge.herokuapp.com/books/17", options)
+    
+    fetch(`https://flatiron-bookstore-challenge.herokuapp.com/books/${book.id}`, options)
     .then((res) => res.json())
-    .then(json => {
-      console.log(json)
+    .then(book => {
+      this.displayBook(book)
     })
   }
 
@@ -86,12 +82,18 @@ class App {
     let btn = document.createElement('button')
     btn.innerText = "Read Book"
     this.showPanel.appendChild(btn)
+    this.buttonListerner(book)
+
+  }
+
+
+  buttonListerner(book){
+    let btn = document.getElementsByTagName('button')[0]
     btn.addEventListener("click", (event) => {
       if(book.users.find((user) => user.id === 17)){
-        alert("you have read the book")
-      } else{
+        return alert("you have read the book")
+      } else {
         this.patchUser(book)
-
       }
     })
   }
