@@ -1,0 +1,11 @@
+To do:
+
+
+- create a fetch(GET) request that will ask for information.
+- send information to the page rendered through html tags(list-panel, show-panel)
+- iterate through set of values that are taken from page
+- create a click event - submit - that will send a post request
+- post request to be rendered within html
+- event listener for button to show up in book summary
+- add event listener helper methods.
+-
