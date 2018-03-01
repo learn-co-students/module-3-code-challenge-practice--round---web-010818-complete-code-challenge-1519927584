@@ -18,7 +18,7 @@ function renderAllBooks(books) {
     li.innerText = books[i].title;
     ul.appendChild(li);
   }
-  selectBookListener()
+  selectBookListener();
 }
 
 function selectBookListener() {
@@ -57,7 +57,7 @@ function renderBookInfo(book) {
   showPanel.appendChild(checkedOutBy);
 
   const usersUl = document.createElement('ul');
-  usersUl.setAttribute('id', 'usersUl')
+  usersUl.setAttribute('id', 'usersUl');
   const usersArr = book.users;
   usersArr.forEach((user) => {
     let li = document.createElement('li');
@@ -79,10 +79,10 @@ function checkOutListener(book) {
     let users = book.users;
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === 14) {
-        alert("You had your chance!")
+        alert("You had your chance!");
       }
     }
-    updateApi(book)
+    updateApi(book);
   });
 }
 
