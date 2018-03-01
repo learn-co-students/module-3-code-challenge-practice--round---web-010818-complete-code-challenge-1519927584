@@ -2,9 +2,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   console.log('loaded');
   getBooks();
-  addEventListeners();
 });
-
 
 function getBooks() {
   fetch('https://flatiron-bookstore-challenge.herokuapp.com/books')
@@ -20,17 +18,15 @@ function renderAllBooks(books) {
     li.innerText = books[i].title;
     ul.appendChild(li);
   }
+  selectBookListener()
 }
 
-function addEventListeners() {
-  selectBook();
-}
-
-function selectBook() {
+function selectBookListener() {
   let ul = document.getElementById('list');
   ul.addEventListener('click', (e) => {
     let bookId = e.target.dataset.id;
     getBookInfo(bookId);
+    const showPanel = document.getElementById('show-panel');
   });
 }
 
@@ -42,6 +38,8 @@ function getBookInfo(id) {
 
 function renderBookInfo(book) {
   const showPanel = document.getElementById('show-panel');
+  showPanel.innerHTML = '';
+
   const title = document.createElement('h3');
   title.innerText = book.title;
   showPanel.appendChild(title);
@@ -54,36 +52,58 @@ function renderBookInfo(book) {
   description.innerText = book.description;
   showPanel.appendChild(description);
 
-  const users = document.createElement('ul');
-  let userTitle = document.createElement('h3');
-  userTitle.innerText = 'Liked by:';
-  users.appendChild(userTitle);
+  const checkedOutBy = document.createElement('h4');
+  checkedOutBy.innerText = 'Past users:';
+  showPanel.appendChild(checkedOutBy);
 
+  const usersUl = document.createElement('ul');
+  usersUl.setAttribute('id', 'usersUl')
   const usersArr = book.users;
   usersArr.forEach((user) => {
     let li = document.createElement('li');
     li.innerText = user.username;
-    users.appendChild(li);
+    usersUl.appendChild(li);
   });
-  showPanel.appendChild(users);
+  showPanel.appendChild(usersUl);
 
   const checkoutBtn = document.createElement('button');
+  checkoutBtn.setAttribute('id', 'checkout');
   checkoutBtn.innerText = 'Check Out';
   showPanel.appendChild(checkoutBtn);
-  checkout(book);
+  checkOutListener(book);
 }
 
-function checkout(book) {
-  document.addEventListener('click', (e) => {
-    let options = {
-      method: 'patch',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify {user_id: 8} //i picked 8
+function checkOutListener(book) {
+  const checkoutBtn = document.getElementById('checkout');
+  checkoutBtn.addEventListener('click', (e) => {
+    let users = book.users;
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].id === 14) {
+        alert("You had your chance!")
+      }
     }
-    fetch(`https://flatiron-bookstore-challenge.herokuapp.com/books/${book.id}`, options)
-    .then(console.log(res))
-  }
+    updateApi(book)
+  });
+}
+
+function renderUpdatedCheckOutList() {
+  const usersUl = document.getElementById('usersUl');
+  let li = document.createElement('li');
+  li.innerText = user.username;
+  usersUl.appendChild(li);
+}
+
+function updateApi(book) {
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: 14})
+  };
+  fetch(`https://flatiron-bookstore-challenge.herokuapp.com/books/${book.id}`, options)
+  .then(res => res.json())
+  .then(json => renderBookInfo(json));
 }
